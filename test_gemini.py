@@ -44,32 +44,76 @@ class Order:
             "type": of_type,
             "options": ["maker-or-cancel"] 
         }
+        self.nonce = self.create_nonce()
+        self.create_payload()
+        self.request_headers = self.create_request_headers()
 
-    def execute(self):
+    def create_nonce(self):
         t = datetime.datetime.now()
-        payload_nonce =  str(int(time.mktime(t.timetuple())*1000))
-        self.payload['nonce'] = payload_nonce
+        return str(int(time.mktime(t.timetuple())*1000))
 
-        encoded_payload = json.dumps(self.payload).encode()
-        b64 = base64.b64encode(encoded_payload)
-        signature = hmac.new(self.gemini_api_secret, b64, hashlib.sha384).hexdigest()
+    def create_payload(self):
+        self.payload['nonce'] = self.nonce
+        self.payload_json = json.dumps(self.payload).encode()
 
-        request_headers = { 'Content-Type': "text/plain",
+
+    def create_request_headers(self):
+        encoded_json = base64.b64encode(self.payload_json)
+        signature = hmac.new(self.gemini_api_secret, encoded_json, hashlib.sha384).hexdigest()
+
+        return { 'Content-Type': "text/plain",
                     'Content-Length': "0",
                     'X-GEMINI-APIKEY': self.gemini_api_key,
-                    'X-GEMINI-PAYLOAD': b64,
+                    'X-GEMINI-PAYLOAD': encoded_json,
                     'X-GEMINI-SIGNATURE': signature,
                     'Cache-Control': "no-cache" }
 
+    def execute(self):
         response = requests.post(self.url,
                         data=None,
-                        headers=request_headers)
+                        headers=self.request_headers)
 
         new_order = response.json()
-        # print(new_order)
-        pp = pprint.PrettyPrinter(depth=6)
-        pp.pprint(new_order)
+        return new_order
+
+
+
+
+def test_connection_error():
+    import pytest
+    with pytest.raises(requests.ConnectionError):
+        o = Order(symbol='btcusd', amount='5', price="3655", side="buy", of_type="exchange limit", options=["maker-or-cancel"])
+        o.url = "http://xxx"
+        o.request_headers = o.create_request_headers()
+        o.execute()
+
+def create_expected(symbol, side, of_type, price, amount, options):
+    pass
 
 if __name__ == '__main__':
     o = Order(symbol='btcusd', amount='5', price="3655", side="buy", of_type="exchange limit", options=["maker-or-cancel"])
-    o.execute()
+    # o.gemini_api_key = "xxx"
+    # o.request_headers = o.create_request_headers()
+    # o = Order(symbol='', amount='5', price="3655", side="buy", of_type="exchange limit", options=["maker-or-cancel"])
+    new_order = o.execute()
+    print(type(new_order))
+    print(new_order)
+    expected = {
+     'order_id': '301695025',
+     'id': '301695025',
+     'symbol': 'btcusd',
+     'exchange': 'gemini',
+     'avg_execution_price': '0.00',
+     'side': 'buy',
+     'type': 'exchange limit',
+     'timestamp': '1570884791',
+     'timestampms': 1570884791462,
+     'is_live': True,
+     'is_cancelled': False,
+     'is_hidden': False,
+     'was_forced': False,
+     'executed_amount': '0',
+     'remaining_amount': '5',
+     'options': ['maker-or-cancel'], 
+     'price': '3655.00', 
+     'original_amount': '5'}
