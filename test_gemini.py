@@ -28,7 +28,7 @@ import pprint
 
 
 class Order:
-    def __init__(self, symbol, amount, price, side, of_type, options):
+    def __init__(self, trade_data):
         self.gemini_api_key = "account-aerS4oOyTLRVHSXx6GVt"
         self.gemini_api_secret = "2ikQFyRkHvetQwZ3vXohVms9NTkr".encode()
         base_url = "https://api.sandbox.gemini.com"
@@ -37,12 +37,12 @@ class Order:
         self.payload = {
         "request": self.endpoint,
             "nonce": '__NONCE__',
-            "symbol": symbol,
-            "amount": amount,
-            "price": price,
-            "side": side,
-            "type": of_type,
-            "options": ["maker-or-cancel"] 
+            "symbol": trade_data['symbol'],
+            "amount": trade_data['amount'],
+            "price": trade_data['price'],
+            "side": trade_data['side'],
+            "type": trade_data['type'],
+            "options": trade_data['options']
         }
         self.nonce = self.create_nonce()
         self.create_payload()
@@ -87,25 +87,15 @@ def test_connection_error():
         o.request_headers = o.create_request_headers()
         o.execute()
 
-def create_expected(symbol, side, of_type, price, amount, options):
-    pass
-
-if __name__ == '__main__':
-    o = Order(symbol='btcusd', amount='5', price="3655", side="buy", of_type="exchange limit", options=["maker-or-cancel"])
-    # o.gemini_api_key = "xxx"
-    # o.request_headers = o.create_request_headers()
-    # o = Order(symbol='', amount='5', price="3655", side="buy", of_type="exchange limit", options=["maker-or-cancel"])
-    new_order = o.execute()
-    print(type(new_order))
-    print(new_order)
-    expected = {
+def create_expected(trade_data):
+    return {
      'order_id': '301695025',
      'id': '301695025',
-     'symbol': 'btcusd',
+     'symbol': trade_data['symbol'],
      'exchange': 'gemini',
      'avg_execution_price': '0.00',
-     'side': 'buy',
-     'type': 'exchange limit',
+     'side': trade_data['side'],
+     'type': trade_data['type'],
      'timestamp': '1570884791',
      'timestampms': 1570884791462,
      'is_live': True,
@@ -113,7 +103,24 @@ if __name__ == '__main__':
      'is_hidden': False,
      'was_forced': False,
      'executed_amount': '0',
-     'remaining_amount': '5',
-     'options': ['maker-or-cancel'], 
-     'price': '3655.00', 
-     'original_amount': '5'}
+     'remaining_amount': trade_data['amount'],
+     'options': trade_data['options'],
+     'price': trade_data['price'], 
+     'original_amount': trade_data['amount']}
+
+if __name__ == '__main__':
+    trade_data = {
+        'symbol':'btcusd',
+        'amount': '5',
+        'price': '3655.00',
+        'side': 'buy',
+        'type': 'exchange limit',
+        'options': ["maker-or-cancel"]
+    }
+    order = Order(trade_data)
+    order_response = order.execute()
+    print(type(order_response))
+    print(order_response)
+    print('-------')
+    print(create_expected(trade_data))
+
