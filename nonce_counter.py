@@ -2,7 +2,7 @@ import datetime
 from datetime import timedelta
 
 class NonceCounter:
-    """This Nonce Counter allows for multiple tests to run while avoiding time.sleep() functions"""
+    """This Nonce static counter allows for multiple tests to run while avoiding time.sleep() functions"""
     last = datetime.datetime.now().replace(microsecond=0)
 
     @classmethod

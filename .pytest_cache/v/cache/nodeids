@@ -1,3 +1,4 @@
 [
-  "test_gemini.py::test_happy_path"
+  "test_gemini.py::test_happy_path_buy",
+  "test_gemini.py::test_happy_path_sell"
 ]
