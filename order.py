@@ -13,15 +13,35 @@ import sys
 from config import Config
 from nonce_counter import NonceCounter
 
+class Response:
+    def __init__(self, response_json, response_code, requests_response):
+        self.response_json = response_json
+        self.response_code = response_code
+        self.text = requests_response.text
 
-DEBUG = Config.DEBUG
 
 class Order:
-    def __init__(self, trade_data):
-        self.gemini_api_key = Config.GEMINI_API_KEY
-        self.gemini_api_secret = Config.GEMINI_API_SECRET.encode()
-        self.base_url = Config.BASE_URL
-        self.endpoint = Config.ENDPOINT
+    """ Order takes a dictionary of trade data
+    trade_data = {
+        'symbol':'btcusd',
+        'amount': '5',
+        'price': '3655.00',
+        'side': 'sell',
+        'type': 'exchange limit',
+        'options': ["maker-or-cancel"]
+    }
+    
+    order = Order(trade_data)
+
+    and returns a requests libray response
+    response = order.execute()
+    """
+    def __init__(self, trade_data, config=Config):
+        self.config = config
+        self.gemini_api_key = config.GEMINI_API_KEY
+        self.gemini_api_secret = config.GEMINI_API_SECRET.encode()
+        self.base_url = config.BASE_URL
+        self.endpoint = config.ENDPOINT
         self.encoded_json = None
         self.signature = None
         self.url = self.base_url + self.endpoint
@@ -68,7 +88,7 @@ class Order:
 
 
     def log_a_usable_curl(self):
-        if DEBUG == True:
+        if self.config.DEBUG == True:
             payload = base64.b64encode(self.create_payload())
             self.create_encoded_json()
             signiture = self.create_signiture()
@@ -93,7 +113,11 @@ class Order:
         response = requests.post(self.url,
                         data=None,
                         headers=self.request_headers)
-        new_order = response.json()
+        if not response.status_code >= 500:
+            json = response.json()
+        else:
+            json = {}
+        code = response.status_code
         self.log_a_usable_curl()
-        return new_order
+        return Response(response_json=json, response_code=code, requests_response=response)
 
