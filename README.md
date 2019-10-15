@@ -137,6 +137,13 @@ order.create_request_headers()
 
 order.requested_headers
 ```
+
+# Changing test configuration
+
+To change the secret, api key, base url or endpoint
+kindly see the file config.py
+
+
 # Extras
 
 Kindly notice that the stdout of each test will provide
