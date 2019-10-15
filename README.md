@@ -63,7 +63,7 @@ reasons.
 
 # How to use the order object to buil a test
 
-the Order object accepts a dictionary
+The Order object accepts a dictionary
 with trade data in its constructor.
 
 One can then choose to execute
