@@ -1,7 +1,8 @@
 # Description
 
 This is the take home test for Gemini corp.
-The tests require the pytest library
+The tests requires Python3, the pytest, and the 
+requests library.
 
 # Requirements
 
@@ -24,21 +25,27 @@ negative
 
 from the root folder run:
 
+```
 >> pytest -m passing
+```
 
 These are tests that are currently
 passing as of the submition.
 
 # How to run failing tests
 
+```
 >> pytest -m failing
+```
 
 These are tests that fail. Kindly see
 the notes on these tests for more details.
 
 # How to run indetermined tests
 
+```
 >> pytest -m indetermined
+```
 
 These are tests that are timing out despite
 having correct fields filled.
@@ -46,7 +53,9 @@ having correct fields filled.
 
 # How to run negative tests
 
+```
 >> pytest -m negative
+```
 
 These are tests that fail for expected
 reasons.
