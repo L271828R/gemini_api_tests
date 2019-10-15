@@ -7,9 +7,9 @@ from ...test_library.status_codes import HttpStatus
 
 
 @pytest.mark.passing
-def test_btcusd_buy_maker_or_cancel_client_order_id_success():
+def test_ethusd_buy_maker_or_cancel_client_order_id_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'client_order_id':'44',
         'amount': '5',
         'price': '3655.00',
@@ -23,9 +23,9 @@ def test_btcusd_buy_maker_or_cancel_client_order_id_success():
     assert actual_response.response_code == HttpStatus.SUCCESSFUL
 
 @pytest.mark.passing
-def test_btcusd_buy_maker_or_cancel_success():
+def test_ethusd_buy_maker_or_cancel_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '5',
         'price': '3655.00',
         'side': 'buy',
@@ -38,9 +38,9 @@ def test_btcusd_buy_maker_or_cancel_success():
     assert actual_response.response_code == HttpStatus.SUCCESSFUL
 
 @pytest.mark.passing
-def test_btcusd_sell_maker_or_cancel_success():
+def test_ethusd_sell_maker_or_cancel_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '5',
         'price': '3655.00',
         'side': 'sell',
@@ -54,9 +54,9 @@ def test_btcusd_sell_maker_or_cancel_success():
 
 
 @pytest.mark.passing
-def test_btcusd_buy_immediate_or_cancel_success():
+def test_ethusd_buy_immediate_or_cancel_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '5',
         'price': '3655.00',
         'side': 'buy',
@@ -70,9 +70,9 @@ def test_btcusd_buy_immediate_or_cancel_success():
 
 
 @pytest.mark.passing
-def test_btcusd_sell_immediate_or_cancel_success():
+def test_ethusd_sell_immediate_or_cancel_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '5',
         'price': '3655.00',
         'side': 'sell',
@@ -86,9 +86,9 @@ def test_btcusd_sell_immediate_or_cancel_success():
 
 
 @pytest.mark.passing
-def test_btcusd_buy_fill_or_kill_success():
+def test_ethusd_buy_fill_or_kill_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '5',
         'price': '3655.00',
         'side': 'buy',
@@ -99,11 +99,10 @@ def test_btcusd_buy_fill_or_kill_success():
     expected_response = create_expected(trade_data)
     assert is_same(expected_response, actual_response.response_json) == True, actual_response.text
     assert actual_response.response_code == HttpStatus.SUCCESSFUL
-
 @pytest.mark.passing
-def test_btcusd_sell_fill_or_kill_success():
+def test_ethusd_sell_fill_or_kill_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '5',
         'price': '3655.00',
         'side': 'sell',
@@ -116,14 +115,14 @@ def test_btcusd_sell_fill_or_kill_success():
     assert actual_response.response_code == HttpStatus.SUCCESSFUL
 
 @pytest.mark.failing
-def test_btcusd_buy_auction_only_success():
+def test_ethusd_buy_auction_only_success():
     """ the response is showing for type="auction only limit" where
     the documentation states that only "exchange limit is supported.
 
     This is a possible bug. Kindly see ticket #43524
     """
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '5',
         'price': '3655.00',
         'side': 'buy',
@@ -136,13 +135,13 @@ def test_btcusd_buy_auction_only_success():
     assert actual_response.response_code == HttpStatus.SUCCESSFUL
 
 @pytest.mark.undetermined
-def test_btcusd_sell_indication_of_interest_success():
+def test_ethusd_sell_indication_of_interest_success():
     """ this test is timing out when amount is 100 , produces 504 error code 
     
         This may be a possible bug. Kindly see ticket #98374
     """
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '100',
         'price': '3655.00',
         'side': 'sell',
@@ -158,7 +157,7 @@ def test_btcusd_sell_indication_of_interest_success():
 @pytest.mark.passing
 def test_missing_options_field_success():
     trade_data = {
-        'symbol':'btcusd',
+        'symbol':'ethusd',
         'amount': '4',
         'price': '3655.00',
         'side': 'buy',
@@ -175,3 +174,6 @@ def test_missing_options_field_success():
     expected_response = create_expected(trade_data, skip_options=True)
     assert is_same(expected_response, actual_response.response_json)
     assert actual_response.response_code == HttpStatus.SUCCESSFUL
+
+if __name__ == '__main__':
+    test_ethusd_sell_indication_of_interest_success()

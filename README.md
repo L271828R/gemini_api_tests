@@ -1,12 +1,11 @@
 # Description
 
 This is the take home test for Gemini corp.
-The tests requires Python3, the pytest, and the 
-requests library.
 
 # Requirements
 
-Python3
+The tests require Python3, pytest, requests
+and the pprint library.
 
 # How to install required libraries
 
@@ -38,7 +37,7 @@ passing as of the submition.
 >> pytest -m failing
 ```
 
-These are tests that fail. Kindly see
+These are the tests that fail. Kindly see
 the notes on these tests for more details.
 
 # How to run indetermined tests
@@ -61,7 +60,7 @@ These are tests that fail for expected
 reasons.
 
 
-# How to use the order object to buil a test
+# How to use the Order object to buil a test
 
 The Order object accepts a dictionary
 with trade data in its constructor.

@@ -72,7 +72,6 @@ class Order:
 
     def create_signiture(self):
         self.signature = hmac.new(self.gemini_api_secret, self.encoded_json, hashlib.sha384).hexdigest()
-        print('creating sig with ', self.encoded_json)
         return self.signature
 
     def create_encoded_json(self):
