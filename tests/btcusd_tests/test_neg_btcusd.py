@@ -130,11 +130,6 @@ def test_btcusd_alpha_amount_failure():
 
 
 @pytest.mark.passing
-
-
-
-
-@pytest.mark.passing
 @pytest.mark.negative
 def test_btcusd_negative_price_failure():
     trade_data = {

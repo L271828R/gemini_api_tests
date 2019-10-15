@@ -4,6 +4,52 @@ This is the take home test for Gemini corp.
 The tests requires Python3, the pytest, and the 
 requests library.
 
+
+In essence there is an Order object that accepts
+a dictionary with trade data in its constructor.
+
+One can then choose to execute
+such as:
+
+```python
+
+trade_data = {
+    'symbol':'btcusd',
+    'client_order_id':'44',
+    'amount': '5',
+    'price': '3655.00',
+    'side': 'buy',
+    'type': 'exchange limit',
+    'options': ["maker-or-cancel"]
+}
+actual_response = Order(trade_data).execute()
+
+```
+
+One can create the Order object and then
+execute the following methods:
+
+```python
+trade_data = {
+    'symbol':'btcusd',
+    'amount': '99',
+    'price': '4444.00',
+    'side': 'buy',
+    'type': 'exchange limit',
+    'options': ["maker-or-cancel"]
+}
+order = Order(trade_data)
+order.create_encoded_json()
+order.create_signiture()
+order.create_request_headers()
+actual_response = order.execute()
+```
+
+
+
+ 
+
+
 # Requirements
 
 Python3
