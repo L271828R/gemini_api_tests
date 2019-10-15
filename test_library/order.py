@@ -10,10 +10,8 @@ import pytest
 import curlify
 import time
 import sys
-# from config import Config
-# from nonce_counter import NonceCounter
-from test_library.config import Config
-from test_library.nonce_counter import NonceCounter
+from .config import Config
+from .nonce_counter import NonceCounter
 
 class Response:
     def __init__(self, response_json, response_code, requests_response):
@@ -46,6 +44,7 @@ class Order:
         self.endpoint = config.ENDPOINT
         self.encoded_json = None
         self.signature = None
+        self.request_headers = None
         self.url = self.base_url + self.endpoint
         self.payload = {
         "request": self.endpoint,
@@ -60,7 +59,7 @@ class Order:
         self.create_payload()
         self.create_encoded_json()
         self.create_signiture()
-        self.request_headers = self.create_request_headers()
+        self.create_request_headers()
 
     def create_nonce(self):
         t = NonceCounter.get_count()
@@ -74,6 +73,7 @@ class Order:
 
     def create_signiture(self):
         self.signature = hmac.new(self.gemini_api_secret, self.encoded_json, hashlib.sha384).hexdigest()
+        print('creating sig with ', self.encoded_json)
         return self.signature
 
     def create_encoded_json(self):
@@ -81,12 +81,13 @@ class Order:
         return self.encoded_json
 
     def create_request_headers(self):
-        return { 'Content-Type': "text/plain",
+        self.request_headers= { 'Content-Type': "text/plain",
                     'Content-Length': "0",
                     'X-GEMINI-APIKEY': self.gemini_api_key,
                     'X-GEMINI-PAYLOAD': self.encoded_json,
                     'X-GEMINI-SIGNATURE': self.signature,
                     'Cache-Control': "no-cache" }
+        return self.request_headers
 
 
     def log_a_usable_curl(self):
@@ -111,7 +112,7 @@ class Order:
             s = s.replace('__URL__', self.url)
             print(s)
 
-    def execute(self):
+    def execute(self, disable_curl=False):
         response = requests.post(self.url,
                         data=None,
                         headers=self.request_headers)
@@ -120,6 +121,7 @@ class Order:
         else:
             json = {}
         code = response.status_code
-        self.log_a_usable_curl()
+        if disable_curl == False:
+            self.log_a_usable_curl()
         return Response(response_json=json, response_code=code, requests_response=response)
 

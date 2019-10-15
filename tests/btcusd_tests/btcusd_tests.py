@@ -1,15 +1,9 @@
 import pytest
 import requests
-# from order import Order
-from test_library.order import Order
-from test_library.test_tools import create_expected
-# from test_tools import create_expected
-from test_library.test_tools import is_same
-# from test_tools import is_same
-from test_library.status_codes import HttpStatus
-# from status_codes import HttpStatus
-
-# TODO CHECK HTTP RESPONSE! 200, 300 etc...
+from ...test_library.order import Order
+from ...test_library.test_tools import create_expected
+from ...test_library.test_tools import is_same
+from ...test_library.status_codes import HttpStatus
 
 
 @pytest.mark.passing
@@ -89,6 +83,7 @@ def test_btcusd_buy_fill_or_kill_success():
     expected_response = create_expected(trade_data)
     assert is_same(expected_response, actual_response.response_json) == True, actual_response.text
     assert actual_response.response_code == HttpStatus.SUCCESSFUL
+
 @pytest.mark.passing
 def test_btcusd_sell_fill_or_kill_success():
     trade_data = {
