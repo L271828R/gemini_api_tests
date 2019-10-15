@@ -55,7 +55,7 @@ def test_invalid_json_failure():
 
 
 @pytest.mark.negative
-def test_invalid_secret_failure():
+def test_invalid_api_key_failure():
     trade_data = {
         'symbol':'btcusd',
         'amount': '99',
@@ -65,12 +65,31 @@ def test_invalid_secret_failure():
         'options': ["maker-or-cancel"]
     }
     order = Order(trade_data)
-    order.payload_json = order.payload_json.decode().replace('}','').encode()
-    order.create_encoded_json()
+    order.request_headers['X-GEMINI-APIKEY'] = "xxx"
+    actual_response = order.execute(disable_curl=True)
+    assert actual_response.response_json['message'] == 'InvalidSignature'
+    assert actual_response.response_json['reason'] == 'InvalidSignature'
+    assert actual_response.response_json['result'] == 'error'
+    assert actual_response.response_code == HttpStatus.ERROR
+
+@pytest.mark.negative
+def test_invalid_secret_failure():
+    """this test removes the closing '}' from the payload so 
+    as to produce an invalid json"""
+    trade_data = {
+        'symbol':'btcusd',
+        'amount': '99',
+        'price': '4444.00',
+        'side': 'buy',
+        'type': 'exchange limit',
+        'options': ["maker-or-cancel"]
+    }
+    order = Order(trade_data)
+    order.gemini_api_secret = "xxx".encode()
     order.create_signiture()
     order.create_request_headers()
     actual_response = order.execute(disable_curl=True)
-    assert actual_response.response_json['message'] == 'InvalidJson'
-    assert actual_response.response_json['reason'] == 'InvalidJson'
+    assert actual_response.response_json['message'] == 'InvalidSignature'
+    assert actual_response.response_json['reason'] == 'InvalidSignature'
     assert actual_response.response_json['result'] == 'error'
     assert actual_response.response_code == HttpStatus.ERROR
