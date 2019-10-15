@@ -1,28 +1,13 @@
-# ROLES
-# The API key you use to access this endpoint must have the Trader role assigned. See Roles for more information.
-
-# HTTP REQUEST
-# POST https://api.gemini.com/v1/order/new
-
-# PARAMETERS
-# Parameter	Type	Description
-# request	string	The literal string "/v1/order/new"
-# nonce	integer	The nonce, as described in Private API Invocation
-# client_order_id	string	Recommended. A client-specified order id
-# symbol	string	The symbol for the new order
-# amount	string	Quoted decimal amount to purchase
-# min_amount	string	Optional. Minimum decimal amount to purchase, for block trades only
-# price	string	Quoted decimal amount to spend per unit
-# side	string	"buy" or "sell"
-# type	string	The order type. Only "exchange limit" supported through this API
-# options	array	Optional. An optional array containing at most one supported order execution option. See Order execution options for details.
-
 import pytest
 import requests
-from order import Order
-from test_tools import create_expected
-from test_tools import is_same
-from status_codes import HttpStatus
+# from order import Order
+from test_library.order import Order
+from test_library.test_tools import create_expected
+# from test_tools import create_expected
+from test_library.test_tools import is_same
+# from test_tools import is_same
+from test_library.status_codes import HttpStatus
+# from status_codes import HttpStatus
 
 # TODO CHECK HTTP RESPONSE! 200, 300 etc...
 

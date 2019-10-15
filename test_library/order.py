@@ -10,8 +10,10 @@ import pytest
 import curlify
 import time
 import sys
-from config import Config
-from nonce_counter import NonceCounter
+# from config import Config
+# from nonce_counter import NonceCounter
+from test_library.config import Config
+from test_library.nonce_counter import NonceCounter
 
 class Response:
     def __init__(self, response_json, response_code, requests_response):
