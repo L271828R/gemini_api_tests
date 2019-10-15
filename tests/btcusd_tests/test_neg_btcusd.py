@@ -96,7 +96,7 @@ def test_btcusd_options_missing_failure():
 
 @pytest.mark.passing
 @pytest.mark.negative
-def test_btcusd_negative_price_failure():
+def test_btcusd_negative_amount_failure():
     trade_data = {
         'symbol':'btcusd',
         'amount': '-5',
@@ -111,4 +111,59 @@ def test_btcusd_negative_price_failure():
     actual_response.response_json['result'] == "error"
     assert actual_response.response_code == HttpStatus.ERROR
 
-    
+@pytest.mark.passing
+@pytest.mark.negative
+def test_btcusd_alpha_amount_failure():
+    trade_data = {
+        'symbol':'btcusd',
+        'amount': 'xxx',
+        'price': '3655.00',
+        'side': 'buy',
+        'type': 'exchange limit',
+        'options': ["maker-or-cancel"]
+    }
+    actual_response = Order(trade_data).execute()
+    actual_response.response_json['message'] == "Invalid quantity for symbol BTCUSD"
+    actual_response.response_json['reason'] == "InvalidQuantity"
+    actual_response.response_json['result'] == "error"
+    assert actual_response.response_code == HttpStatus.ERROR
+
+
+@pytest.mark.passing
+
+
+
+
+@pytest.mark.passing
+@pytest.mark.negative
+def test_btcusd_negative_price_failure():
+    trade_data = {
+        'symbol':'btcusd',
+        'amount': '5',
+        'price': '-3655.00',
+        'side': 'buy',
+        'type': 'exchange limit',
+        'options': ["maker-or-cancel"]
+    }
+    actual_response = Order(trade_data).execute()
+    actual_response.response_json['message'] == "Invalid price for symbol BTCUSD"
+    actual_response.response_json['reason'] == "InvalidPrice"
+    actual_response.response_json['result'] == "error"
+    assert actual_response.response_code == HttpStatus.ERROR 
+
+@pytest.mark.passing
+@pytest.mark.negative
+def test_btcusd_alpha_price_failure():
+    trade_data = {
+        'symbol':'btcusd',
+        'amount': '5',
+        'price': 'xxx',
+        'side': 'buy',
+        'type': 'exchange limit',
+        'options': ["maker-or-cancel"]
+    }
+    actual_response = Order(trade_data).execute()
+    actual_response.response_json['message'] == "Invalid price for symbol BTCUSD"
+    actual_response.response_json['reason'] == "InvalidPrice"
+    actual_response.response_json['result'] == "error"
+    assert actual_response.response_code == HttpStatus.ERROR

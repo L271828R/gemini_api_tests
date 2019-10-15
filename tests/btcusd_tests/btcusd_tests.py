@@ -3,7 +3,24 @@ import requests
 from ...test_library.order import Order
 from ...test_library.test_tools import create_expected
 from ...test_library.test_tools import is_same
-from ...test_library.status_codes import HttpStatus
+from ...test_library.status_codes import HttpStatu
+
+@pytest.mark.xxx
+def test_btcusd_buy_maker_or_cancel_client_order_id_success():
+    trade_data = {
+        'symbol':'btcusd',
+        'client_order_id': '44',
+        'amount': '5',
+        'price': '3655.00',
+        'side': 'buy',
+        'type': 'exchange limit',
+        'options': ["maker-or-cancel"]
+    }
+    actual_response = Order(trade_data).execute()
+    expected_response = create_expected(trade_data)
+    assert is_same(expected_response, actual_response.response_json) == True, actual_response.text
+    assert actual_response.response_code == HttpStatus.SUCCESSFUL
+
 
 
 @pytest.mark.passing

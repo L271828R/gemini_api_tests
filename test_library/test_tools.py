@@ -2,8 +2,8 @@
 import pprint
 
 
-def create_expected(trade_data):
-    return {
+def create_expected(trade_data, skip_options=False):
+    payload = {
      'symbol': trade_data['symbol'],
      'exchange': 'gemini',
      'side': trade_data['side'],
@@ -12,12 +12,16 @@ def create_expected(trade_data):
      'options': trade_data['options'],
      'price': trade_data['price'], 
      'original_amount': trade_data['amount']}
+    if skip_options:
+        payload['options'] = []
+    return payload
+    
 
 def is_same(expected, actual):
     """is_same takes two responses and compares non volatile elements"""
     expected_volatile_elements_removed = expected
     copy_of_actual_volatile_elements_removed = actual.copy()
-    if expected_volatile_elements_removed['options'] != ['indication-of-interest']:
+    if 'options' not in expected_volatile_elements_removed or expected_volatile_elements_removed['options'] != ['indication-of-interest']:
         assert(actual['order_id'] != '')
         assert(actual['id'] != '')
         assert(actual['timestamp'] != '')

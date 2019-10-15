@@ -7,7 +7,6 @@ import hashlib
 import datetime, time
 import pprint
 import pytest
-import curlify
 import time
 import sys
 from .config import Config
