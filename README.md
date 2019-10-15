@@ -94,6 +94,7 @@ trade_data = {
     'options': ["maker-or-cancel"]
 }
 order = Order(trade_data)
+order.create_payload()
 order.create_encoded_json()
 order.create_signiture()
 order.create_request_headers()
