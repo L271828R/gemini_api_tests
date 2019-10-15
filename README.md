@@ -12,7 +12,6 @@ One can then choose to execute
 such as:
 
 ```python
-
 trade_data = {
     'symbol':'btcusd',
     'client_order_id':'44',
@@ -23,7 +22,6 @@ trade_data = {
     'options': ["maker-or-cancel"]
 }
 actual_response = Order(trade_data).execute()
-
 ```
 
 One can create the Order object and then
@@ -45,6 +43,42 @@ order.create_request_headers()
 actual_response = order.execute()
 ```
 
+order.execute() has a dependency on the
+exposed in this particular order:
+
+```python
+order.create_payload()
+order.create_encoded_json()
+order.create_signiture()
+order.create_requested_headers()
+```
+
+```python
+order.create_payload()
+
+prepares exposed member:
+
+order.payload_json
+
+
+order.create_encoded_json()
+
+prepares exposed member:
+
+order.encoded_json
+
+order.create_signiture()
+
+prepares exposed member:
+
+order.signiture
+
+order.create_request_headers()
+
+prepares exposed member:
+
+order.requested_headers
+```
 
 
  
