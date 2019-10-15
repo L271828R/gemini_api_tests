@@ -16,10 +16,10 @@ pip install -r requirements.txt
 
 Thre are four taggings for the tests created
 
-passing
-failing
-indetermined
-negative
+* passing
+* failing
+* indetermined
+* negative
 
 # How to run passing tests
 
@@ -63,8 +63,8 @@ reasons.
 
 # How to use the order object to buil a test
 
-the Order object that accepts
-a dictionary with trade data in its constructor.
+the Order object accepts a dictionary
+with trade data in its constructor.
 
 One can then choose to execute
 such as:
