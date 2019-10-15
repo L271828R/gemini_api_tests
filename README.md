@@ -137,5 +137,12 @@ order.create_request_headers()
 
 order.requested_headers
 ```
+# Extras
 
+Kindly notice that the stdout of each test will provide
+a curl output so as to test in Postman or any curl like tools.
+
+This can be disabled by setting the member in config.py
+
+DEBUG=False
 
